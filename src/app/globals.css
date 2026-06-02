@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — Single source of truth para todos los colores y valores.
+   Tailwind los consume vía @theme inline más abajo.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Surfaces */
+  --background:          #faf6f0; 
+  --foreground:          #2a2422; 
+
+  /* Brand primary */
+  --primary:             #ea580c; 
+  --primary-foreground:  #ffffff;
+
+  /* Accent */
+  --accent:              #f97316;
+  --accent-foreground:   #ffffff;
+
+  /* Cards & panels */
+  --card:                #ffffff;
+  --card-foreground:     #2a2422;
+
+  /* 🛠️ CORRECCIÓN AQUÍ: Oscurecemos el texto mutado a un tono piedra profundo para pasar el contraste */
+  --muted:               #f5eee6;
+  --muted-foreground:    #57534e; /* Antes era #78716c (muy claro) */
+
+  /* Borders */
+  --border:              #e7e5e4;
+  --radius:              0.75rem;
+}
+
+.dark {
+  --background:          #062029;
+  --foreground:          #f8fafc;
+  --primary:             #14b8a6;
+  --primary-foreground:  #062029;
+  --accent:              #14b8a6;
+  --accent-foreground:   #062029;
+  --card:                #0f292e;
+  --card-foreground:     #f8fafc;
+  --muted:               #0f2e36;
+  --muted-foreground:    #94a3b8;
+  --border:              #1e3a40;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TAILWIND V4 — @theme inline
+   Lee los CSS vars definidos arriba y los expone como utilidades Tailwind.
+   bg-primary, text-accent, border-border, bg-primary/25, etc.
+   ═══════════════════════════════════════════════════════════════════════════ */
+  @theme inline {
+  /* Colors */
+  --color-background:         var(--background);
+  --color-foreground:         var(--foreground);
+  --color-primary:            var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent:             var(--accent);
+  --color-accent-foreground:  var(--accent-foreground);
+  --color-card:               var(--card);
+  --color-card-foreground:    var(--card-foreground);
+  --color-muted:              var(--muted);
+  --color-muted-foreground:   var(--muted-foreground);
+  --color-border:             var(--border);
+
+  /* Typography — Next.js/Google Font vars inyectados desde layout.tsx */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Border-radius tokens */
+  --radius-sm:   calc(var(--radius) - 0.25rem);
+  --radius-md:   var(--radius);
+  --radius-lg:   calc(var(--radius) + 0.25rem);
+  --radius-xl:   calc(var(--radius) + 0.5rem);
+  --radius-2xl:  calc(var(--radius) + 1rem);
+  --radius-3xl:  calc(var(--radius) + 1.5rem);
+  --radius-full: 9999px;
+
+  /* Marquee animation */
+  --animate-marquee: marquee 32s linear infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  --animate-ring-phone: ring 2s ease-in-out infinite;
+  @keyframes ring {
+    0%, 100% { transform: rotate(0deg); }
+    10%, 30%, 50%, 70%, 90% { transform: rotate(-10deg); }
+    20%, 40%, 60%, 80% { transform: rotate(10deg); }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  /* FIX BUG-6: Usar el CSS var del sistema tipográfico de Next.js.
+     Nunca sobreescribir con Arial u otra fuente genérica aquí. */
+  font-family: var(--font-sans);
+  @apply transition-colors duration-300 antialiased;
+}
